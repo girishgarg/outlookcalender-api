@@ -19,6 +19,11 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+import org.json.JSONException;
+//import org.json.simple.parser.JSONParser;
+//import org.json.simple.parser.ParseException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +37,7 @@ public class AuthorizeController {
       @RequestParam("code") String code, 
       @RequestParam("id_token") String idToken,
       @RequestParam("state") UUID state,
-      HttpServletRequest request) throws ClientProtocolException, IOException{ {
+      HttpServletRequest request) throws ClientProtocolException, IOException, JSONException { {
     // Get the expected state value from the session
     HttpSession session = request.getSession();
     UUID expectedState = (UUID) session.getAttribute("expected_state");
@@ -73,21 +78,28 @@ public class AuthorizeController {
     return "mail";
   }
 }
-  public void eventget(String token) throws ClientProtocolException, IOException {
-	//TokenResponse tokenResponse = new TokenResponse();
-	  HttpClient client = new DefaultHttpClient();
-	  HttpGet request = new HttpGet("http://graph.microsoft.com/v1.0/me/events");
-	  //httpget.addHeader("content-type", "application/json");
-	  //System.out.println("checkingprint"+token);
-	  request.addHeader("Authorization", "Bearer "+token);
-	  HttpResponse response = client.execute(request);
-	  BufferedReader rd = new BufferedReader (new InputStreamReader(response.getEntity().getContent()));
-	  String line = "";
-	  while ((line = rd.readLine()) != null) {
-	    System.out.println(line);
+  public void eventget(String token) throws ClientProtocolException, IOException, JSONException{
+		//TokenResponse tokenResponse = new TokenResponse();
+		  HttpClient client = new DefaultHttpClient();
+		  HttpGet request = new HttpGet("http://graph.microsoft.com/v1.0/me/calendarview?startDateTime=2017-08-30T01:00:00&endDateTime=2017-08-31T23:00:00");
+		  request.addHeader("content-type", "application/json");
+		  //System.out.println("checkingprint"+token);
+		  request.addHeader("Authorization", "Bearer "+token);
+		  HttpResponse response = client.execute(request);
+		  BufferedReader rd = new BufferedReader (new InputStreamReader(response.getEntity().getContent()));
+		  String line = "";
+		  StringBuilder jsonString = new StringBuilder();
+		  System.out.println("------------------------------------------------------");
+		  while ((line = rd.readLine()) != null) {
+			  jsonString.append(line);
+			  System.out.println(line);
+		  }
+		  JSONObject jsonObj = new JSONObject(jsonString.toString());
+		  //JSONParser parser = new JSONParser();
+		  //JSONObject json = (JSONObject) parser.parse(line);
+		  System.out.println("------------------------------------------------------");
+		  System.out.println(jsonObj);
 	  }
-	  
-  }
   @RequestMapping("/logout")
   public String logout(HttpServletRequest request) {
     HttpSession session = request.getSession();

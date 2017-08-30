@@ -23,7 +23,7 @@ public class AuthHelper {
     "profile", 
     "User.Read",
     "Mail.Read",
-    "Calendars.Read",
+    //"Calendars.Read",
     "Calendars.ReadWrite",
     };
 
