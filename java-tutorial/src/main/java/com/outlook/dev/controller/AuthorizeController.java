@@ -81,7 +81,8 @@ public class AuthorizeController {
   public void eventget(String token) throws ClientProtocolException, IOException, JSONException{
 		//TokenResponse tokenResponse = new TokenResponse();
 		  HttpClient client = new DefaultHttpClient();
-		  HttpGet request = new HttpGet("http://graph.microsoft.com/v1.0/me/calendarview?startDateTime=2017-08-30T01:00:00&endDateTime=2017-08-31T23:00:00");
+		  // to use graph api we have to just change the hit url
+		  HttpGet request = new HttpGet("https://outlook.office.com/api/v2.0/me/events?$select=Subject,Organizer,Start,End");
 		  request.addHeader("content-type", "application/json");
 		  //System.out.println("checkingprint"+token);
 		  request.addHeader("Authorization", "Bearer "+token);

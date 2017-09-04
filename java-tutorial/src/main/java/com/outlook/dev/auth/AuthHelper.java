@@ -18,13 +18,17 @@ public class AuthHelper {
   private static final String authorizeUrl = authority + "/common/oauth2/v2.0/authorize";
 
   private static String[] scopes = { 
-    "openid", 
-    "offline_access",
+    "openid",
+    //uncomment the lower part for using graph api 
+    /*"offline_access",
     "profile", 
     "User.Read",
     "Mail.Read",
     //"Calendars.Read",
-    "Calendars.ReadWrite",
+    "Calendars.ReadWrite",*/
+    // lower scopes are for office 365 api
+    "https://outlook.office.com/Mail.Read",
+    "https://outlook.office.com/calendars.read",
     };
 
   private static String appId = null;
